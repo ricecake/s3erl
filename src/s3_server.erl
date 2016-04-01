@@ -133,7 +133,7 @@ v(Key, Data, Default) ->
 create_config(Config) ->
     AccessKey        = v(access_key, Config),
     SecretAccessKey  = v(secret_access_key, Config),
-    Endpoint         = v(endpoint, Config),
+    Endpoint         = v(endpoint, Config, "s3.amazonaws.com"),
 
     Timeout          = v(timeout, Config, 1500),
     RetryCallback    = v(retry_callback, Config,
