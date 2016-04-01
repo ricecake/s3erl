@@ -149,22 +149,11 @@ do_request(Url, Method, Headers, Body, Timeout, Options) ->
             do_request(Location, Method, Headers, Body, Timeout, Options);
         {ok, {{404, "Not Found" ++ _}, _, _}} ->
             {ok, not_found};
-        {ok, {Code, _ResponseHeaders, <<>>}} ->
+        {ok, {Code, _ResponseHeaders, _Body}} ->
             {error, Code};
-        {ok, {_Code, _ResponseHeaders, ResponseBody}} ->
-            {error, parseErrorXml(ResponseBody)};
         {error, Reason} ->
             {error, Reason}
     end.
-
-
-parseErrorXml(Xml) ->
-    {XmlDoc, _Rest} = xmerl_scan:string(binary_to_list(Xml)),
-    [#xmlText{value=ErrorCode}] = xmerl_xpath:string("/Error/Code/text()", XmlDoc),
-    [#xmlText{value=ErrorMessage}] = xmerl_xpath:string("/Error/Message/text()",
-                                                        XmlDoc),
-    {ErrorCode, ErrorMessage}.
-
 
 parseCopyXml(Xml) ->
     {XmlDoc, _Rest} = xmerl_scan:string(binary_to_list(Xml)),
