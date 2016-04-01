@@ -108,12 +108,12 @@ build_host(Bucket) ->
     [Bucket, ".s3.amazonaws.com"].
 
 build_host(Endpoint, Bucket) ->
-    [Endpoint, "/", Bucket].
+    [Bucket, ".", Endpoint].
 
 build_url(undefined, Bucket, Path) ->
     lists:flatten(["http://", build_host(Bucket), "/", Path]);
-build_url(Endpoint, _Bucket, Path) ->
-    lists:flatten(["http://", Endpoint, "/", Path]).
+build_url(Endpoint, Bucket, Path) ->
+    lists:flatten(["http://", build_host(Endpoint, Bucket), "/", Path]).
 
 build_full_url(undefined, Bucket, Path) ->
     lists:flatten(["http://", build_host(Bucket), "/", Path]);
